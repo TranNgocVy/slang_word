@@ -5,9 +5,12 @@
 package slangword;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  *
@@ -21,8 +24,10 @@ public class SlangWord {
     public static void main(String[] args) throws IOException {
         String filename = "slang.txt";
         ArrayList<slang_word> swList = readFile(filename);
+        addNewSlangWord(filename);
     }
     
+    //Doc file luu vao ArrayList
     public static ArrayList<slang_word> readFile(String filename) throws IOException {
         ArrayList<slang_word> swList = new ArrayList<>();
         BufferedReader br = new BufferedReader(new FileReader(filename));
@@ -36,7 +41,6 @@ public class SlangWord {
                 int point = line.indexOf('`');
                 
                 if(point < 0){
-                    System.out.println(line);
                     defineString = line;
                     do{
                         //Xac dinh vi tri phan cach giua cac nghia (doi voi tu co nhieu nghia)
@@ -84,6 +88,61 @@ public class SlangWord {
                 break;
             }
         }
+        
+        br.close();
         return swList;
+    }
+    
+    //Them mot slang word moi vao file
+    public static void addNewSlangWord(String filename) throws IOException {
+        String key = null;
+        String definition = null;
+        ArrayList<String> defineList = new ArrayList<>();
+        int choose = 0; 
+        boolean isValid = true;
+        
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.print("Slang word moi: ");
+        key = scanner.nextLine();
+        
+        do{
+            System.out.print("Nghia cua slang word moi: ");
+            definition = scanner.nextLine();
+            
+            defineList.add(definition);
+            
+            System.out.println("Con nghia nao khac nua hay khong?");
+            System.out.println(" + Phim 1: Co");
+            System.out.println(" + Phim 0: Khong");
+            
+            do{
+                isValid = true;
+                
+                System.out.print("Ban chon: ");
+                
+                try{
+                    choose = scanner.nextInt();
+                    
+
+                }catch(Exception e){
+                    isValid = false; 
+                }
+                
+                //Loai bo dau enter (tuong tu lenh ignore() trong c++)
+                scanner.nextLine();
+
+                if(isValid == false || (choose != 0 && choose != 1)){
+                    System.out.println("Khong hop le. Hay nhap lai!!");
+                }
+                else{
+                    break;
+                }
+            }while(true);
+        }while(choose == 1);
+        
+        BufferedWriter bw = new BufferedWriter(new FileWriter(filename, true));
+        bw.write(key + "`" + String.join("| ", defineList) + "\n");
+        bw.close();
     }
 }
