@@ -24,7 +24,8 @@ public class SlangWord {
     public static void main(String[] args) throws IOException {
         String filename = "slang.txt";
         ArrayList<slang_word> swList = readFile(filename);
-        addNewSlangWord(filename);
+//        addNewSlangWord(filename);
+        deleteSlangWord(filename);
     }
     
     //Doc file luu vao ArrayList
@@ -93,13 +94,42 @@ public class SlangWord {
         return swList;
     }
     
+    //Nhap vao mot so nguyen tu man hinh console
+    public static int getInt(){
+        boolean isValid = true;
+        int choose = 0;
+        Scanner scanner = new Scanner(System.in);
+
+        do{
+                isValid = true;
+                
+                try{
+                    choose = scanner.nextInt();
+                }catch(Exception e){
+                    isValid = false; 
+                }
+                
+                //Loai bo dau enter (tuong tu lenh ignore() trong c++)
+                scanner.nextLine();
+
+                if(isValid == false){
+                    System.out.println("Khong hop le. Hay nhap lai!!");             
+                    System.out.print("Ban chon: ");
+
+                }
+                else{
+                    break;
+                }
+        }while(true);
+        return choose;
+    }
+    
     //Them mot slang word moi vao file
     public static void addNewSlangWord(String filename) throws IOException {
         String key = null;
         String definition = null;
         ArrayList<String> defineList = new ArrayList<>();
         int choose = 0; 
-        boolean isValid = true;
         
         Scanner scanner = new Scanner(System.in);
         
@@ -117,22 +147,10 @@ public class SlangWord {
             System.out.println(" + Phim 0: Khong");
             
             do{
-                isValid = true;
-                
                 System.out.print("Ban chon: ");
-                
-                try{
-                    choose = scanner.nextInt();
-                    
+                choose = getInt();
 
-                }catch(Exception e){
-                    isValid = false; 
-                }
-                
-                //Loai bo dau enter (tuong tu lenh ignore() trong c++)
-                scanner.nextLine();
-
-                if(isValid == false || (choose != 0 && choose != 1)){
+                if(choose != 0 && choose != 1){
                     System.out.println("Khong hop le. Hay nhap lai!!");
                 }
                 else{
@@ -144,5 +162,65 @@ public class SlangWord {
         BufferedWriter bw = new BufferedWriter(new FileWriter(filename, true));
         bw.write(key + "`" + String.join("| ", defineList) + "\n");
         bw.close();
+    }
+    
+    //Xoa mot slang word. Confirm truoc khi xoa.
+    public static void deleteSlangWord(String filename) throws IOException{
+        Scanner scanner = new Scanner(System.in);
+        String key = null;
+        boolean exist = false;
+        int choose = 0;
+        System.out.print("Ban muon xoa slang word nao: ");
+        key = scanner.nextLine();
+        
+        ArrayList<slang_word> swList = readFile(filename);
+        
+        for(slang_word sw: swList){
+            if(key.equals(sw.key)){
+                exist = true;
+                //Xac nhan co xoa slang word hay khong
+                System.out.println("Ban co chac la muon xoa slang word '" + key + "' hay khong?");
+                System.out.println(" + Phim 1: Xoa");
+                System.out.println(" + Phim 0: Tro lai");
+                
+                do{
+                    System.out.print("Ban chon: ");
+                    choose = getInt();
+
+                    if(choose != 0 && choose != 1){
+                        System.out.println("Khong hop le. Hay nhap lai!!");
+                    }
+                    else{
+                        break;
+                    }
+                }while(true);
+                
+                //Khi xac nhan ddong y xoa slang word
+                if(choose == 1){
+                    //Xoa khoi ArrayList
+                    swList.remove(sw);
+                    
+                    //Ghi lai vao file
+                    BufferedWriter bw = new BufferedWriter(new FileWriter(filename));
+                    
+                    for(slang_word temp: swList){
+                        bw.write(temp.key + "`" + String.join("| ", temp.definition) + "\n");
+                    }
+                    bw.close();
+                    
+                    System.out.println("Da xoa thanh cong slang word '" + key + "' ra khoi danh sach.");
+                }
+                //Khong dong y xoa slang word.
+                else{
+                    System.out.println("Thao tac xoa slang word '" + key + "' da huy bo.");                    
+                }
+                break;
+            }
+        }
+        
+        //Neu slang word khong co trong danh sach
+        if(exist == false){
+            System.out.println("Khong ton tai slang word '" + key + "' trong danh sach.");
+        }
     }
 }

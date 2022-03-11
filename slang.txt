@@ -10,7 +10,7 @@ $_$`Has money
 >.>`Suspicious| wary
 >.<`Frustrated| angry| upset| in pain
 >//<`Embarrassed| blushing
->3`Evil but happy|Hate
+>3`Evil but happy| ate
 >:(`Angry
 >:)`Evil Grin
 >:D`Scheming| Maniacal
@@ -62,7 +62,7 @@ $_$`Has money
 *S*`Salute
 *\O/*`Cheerleader
 *_*`In love| dazed
-+1`Partner |Me too
++1`Partner | e too
 +REP`Boost reputation
 +_+`Dead man
 -.-`Annoyance
@@ -80,7 +80,7 @@ $_$`Has money
 ._.`Emoticon Representing Apathy
 /.\`Shy| Ashamed
 //`Love| I love you
-/:)`Flirtation |Sign Of Suspicion
+/:)`Flirtation | ign Of Suspicion
 /B/`4chan's random image board
 /O/`Happy| arms in the air
 /O\`Frustrated| hands on head
@@ -350,7 +350,7 @@ AHA`discovery| realization
 AHEM`Throat clearing sound
 AHO`Idiot
 AHT`Out
-AI`Artificial Intelligence|As If
+AI`Artificial Intelligence| s If
 AIB`Am I Boverd?
 AIDS`Acquired Immune Deficiency Syndrome
 AIGF`All In Good Fun
@@ -409,8 +409,7 @@ ALT`Alternative character in RPG
 ALU`Arithmetic Logic Unit
 ALV`Asta La Vista| goodbye
 ALWP`Actual Laughter Was Produced
-AMA`Ask Me Anything
-Against Medical Advice
+AMA`Ask Me Anything| Against Medical Advice
 AMAA`Ask Me Almost Anything
 AMAP`As Much As Possible
 AMC`American Motors Corportation
@@ -904,8 +903,7 @@ BOLO`Be On The Lookout
 BOLSHY`Bolshevik| communist| Argumentative
 BOLTOP`Better On Lips Than On Paper
 BOM`Bro| dude| friend
-BOMB`Something really bad
-Something really good
+BOMB`Something really bad| Something really good
 BOMBSHELL`Very attractive woman
 BOMM`BOOMM
 BONE UP`Learn about| revise
@@ -1108,8 +1106,7 @@ C/O`Class Of ...
 C1`Affirmative| Roger that
 C2C`Consumer to Consumer| Cam to Cam
 C4`Plastic explosive
-C4C`Comment for Comment
-Cam for Cam
+C4C`Comment for Comment| Cam for Cam
 C:`Very happy
 CAAC`Cool As A Cucumber
 CAB`Misspelling of CBA
@@ -1134,7 +1131,7 @@ CANTO`Cantonese
 CAP`Shoot
 CAPISH`Do you understand?
 CAPO`Captain| Mafia boss
-CAPS`Bullets|Mushrooms
+CAPS`Bullets| ushrooms
 CAPTCHA`Completely Automated Public Turing Test To Tell Computers and Humans Apart
 CARD`Amusing| eccentric person
 CARDY`Cardigan
@@ -1986,7 +1983,7 @@ EOL`End Of Lecture
 EOM`End Of Message
 EOR`End Of Rant
 EOS`End Of Show
-EOT`End Of Thread |end of discussion
+EOT`End Of Thread | nd of discussion
 EOTD`End Of The Day
 EOTW`End Of The World
 EOTWAWKI`End Of The World As We Know It
@@ -2000,8 +1997,7 @@ EPOS`Electronic Point Of Sale
 EPROM`Electronically Programmable ROM
 EQ`EverQuest (game)
 EQE`Easy Quick Efficient
-ER`Emergency Room
-Indicating hesitation
+ER`Emergency Room| Indicating hesitation
 ERB`Herb| Marijuana
 ERK`Irk| annoy
 ERM`Awkward conversation filler
@@ -2292,7 +2288,7 @@ FTA`From The Article
 FTAO`For the Attention Of
 FTASB`Faster Than A Speeding Bullet
 FTBOMH`From The Bottom Of My Heart
-FTC`Favorite|Thumbs up| Comment
+FTC`Favorite| humbs up| Comment
 FTD`Fresh To Death
 FTF`First To Find
 FTFT`For The First Time
@@ -2878,8 +2874,7 @@ HOOAH`HUA
 HOOCHIE`Over made up woman with trashy dress sense
 HOOCHIFIED`Dressed Provocatively
 HOOD`Neighborhood| ghetto
-HOODIE`Hooded sweatshirt
-Person wearing a hooded sweatshirt
+HOODIE`Hooded sweatshirt| Person wearing a hooded sweatshirt
 HOOK ME UP`Share with me
 HOOKED`Addicted
 HOOPS`Basketabll
@@ -3739,7 +3734,7 @@ LART`Luser Attitude Readjustment Tool
 LASER`Light Amplification by Stimulated Emission of Radiation
 LAT`Living Apart Together
 LATA`LATERS
-LATE`Missed a period| possibly pregnant|Dead
+LATE`Missed a period| possibly pregnant| ead
 LATERS`See you later, goodbye
 LATERZ`See you later, goodbye
 LATM`Laughing At The Moment
@@ -5346,7 +5341,7 @@ PSB`Please See Below
 PSD`Photoshop Data file
 PSH`Dismissive expression
 PSHAW`disbelief| scepticism
-PSI`Pounds per Square Inch (pressure)|Greek letter
+PSI`Pounds per Square Inch (pressure)| reek letter
 PSM`Personal Short Message
 PSN`Playstation Network
 PSP`PlayStation Portable
@@ -6037,7 +6032,7 @@ SOMSW`Someone Over My Shoulder Watching
 SON`Close Friend
 SONAR`SOund Navagation And Ranging
 SOO`So
-SOOC`Straight Out Of Camera |not Photoshopped
+SOOC`Straight Out Of Camera | ot Photoshopped
 SOOD`Cool
 SOOK`A Person Who Whines Or Is Overly Sensitive
 SOOTB`Straight Out Of The Box
@@ -7640,7 +7635,6 @@ ZTA`Zeta Tau Alpha
 ZUP`What's up?
 ZUT`Damn it
 ZZZ`Sleepy| bored| tired
-\M/`Horns| metal salute
 \O`Waving
 \O/`Happy| arms in the air
 \\//`Peace| Vulcan salute
