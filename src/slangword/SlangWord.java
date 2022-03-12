@@ -27,9 +27,12 @@ public class SlangWord {
         ArrayList<slang_word> swList = readFile(filename);
 //        addNewSlangWord(filename);
 //        deleteSlangWord(filename);
-//        for(int i =0; i< 5; i++){
+//        for(int i =0; i< 20; i++){
 //            gameSlangWord(swList);
 //        }
+        for(int i =0; i < 15; i++){
+            gameDefinition(swList);
+        }
     }
     
     //Doc file luu vao ArrayList
@@ -244,8 +247,8 @@ public class SlangWord {
         //Chon vi tri cua dap an dung trong 4 dap an
         int rightId = rd.nextInt(4);
         
-        //Chon dap an dung (Truong hop slang word co nhieu nghia)
-        options[rightId] = sw.definition.get(rd.nextInt(sw.definition.size()));        
+//        //Chon dap an dung (Truong hop slang word co nhieu nghia)
+//        options[rightId] = sw.definition.get(rd.nextInt(sw.definition.size()));        
         
         //Tao cac dap an
         int tempId = swId + 1;
@@ -254,11 +257,18 @@ public class SlangWord {
                 //Cac dap an sai là cac slang word - definition ke tiep trong danh sach
                 //Truong hop slang word dung o cuoi danh sach thi se lay cac phan tu phia truoc cua slang word - definition dung.
                 if(tempId == swList.size()){
+                    if(i > rightId)
                         tempId = swId - ( 4 - i);
+                    else
+                        tempId = swId - ( 3 - i);
                 }
                 
                 options[i] = swList.get(tempId).definition.get(rd.nextInt(swList.get(tempId).definition.size()));
                 tempId++;
+            }
+            else{
+                //Chon dap an dung (Truong hop slang word co nhieu nghia)
+                options[rightId] = sw.definition.get(rd.nextInt(sw.definition.size())); 
             }
         }
         
@@ -285,6 +295,72 @@ public class SlangWord {
         }
         else{
             System.out.println("Ban da chon '" + options[choose - 1] + "' sai roi. Dap an dung ne: " + sw.key + " = " + options[rightId] + "(Phim " + (rightId + 1) + ")");
+        }
+    }
+    
+    // Do vui: Hien thi mot slang word va 4 dap an cho nguoi dung chon.
+    public static void gameDefinition(ArrayList<slang_word> swList){
+        //Random definition ngau nhien.
+        Random rd = new Random();
+        int defId = rd.nextInt(swList.size());
+        slang_word def = swList.get(defId);
+        
+        //Definition duoc chon
+        String definition = def.definition.get(rd.nextInt(def.definition.size()));
+        
+        //Bien lua chon dap an
+        int choose = 0; 
+
+        //Mang luu dap an
+        String[] options = new String[4];
+        
+        //Chon vi tri cua dap an dung trong 4 dap an
+        int rightId = rd.nextInt(4);
+        
+        //Tao cac dap an
+        int tempId = defId + 1;
+        for(int i = 0; i < 4; i++){
+            if(i != rightId){
+                //Cac dap an sai là cac slang word - definition ke tiep trong danh sach
+                //Truong hop definition dung o cuoi danh sach thi se lay cac phan tu phia truoc cua slang word - definition dung.
+                if(tempId == swList.size()){
+                    if(i > rightId)
+                        tempId = defId - ( 4 - i);
+                    else
+                        tempId = defId - ( 3 - i);
+                }
+                
+                options[i] = swList.get(tempId).key;
+                tempId++;
+            }
+            else{
+                options[i] = def.key;
+            }
+        }
+        
+        System.out.println("Definition: " + definition);
+        for(int i = 0; i< 4; i++){
+            System.out.println("\tPhim " + (i +1) + ". " + options[i]);
+        }
+
+        do{
+            System.out.print("Ban chon: ");
+            choose = getInt();
+            
+            //Kiem tra tinh hop le cua dap an.
+            if(choose < 1 || choose > 4){
+                System.out.println("Lua chon khong hop le. Hay chon lai.");
+            }
+            else{
+                break;
+            }
+        }while(true);
+        
+        if(choose - 1 == rightId){
+            System.out.println("Chuc mung ban da chon dung: " + options[rightId] + " = " + definition);
+        }
+        else{
+            System.out.println("Ban da chon '" + options[choose - 1] + "' sai roi. Dap an dung ne: " + options[rightId] + " = " + definition + "(Phim " + (rightId + 1) + ")");
         }
     }
     
