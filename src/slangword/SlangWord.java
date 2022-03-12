@@ -26,12 +26,15 @@ public class SlangWord {
         String filename = "slang.txt";
         ArrayList<slang_word> swList = readFile(filename);
         
-        slang_word randonslw = randromSlangWord(swList);
-        System.out.print("Ramdom slang word: " + randonslw.key + " = " + randonslw.definition.get(0));
-        for(int i = 1; i < randonslw.definition.size(); i++){
-            System.out.print(", " + randonslw.definition.get(i));
-        }
-        System.out.println("");
+        findSlangWord(swList);
+        
+//        slang_word randonslw = randromSlangWord(swList);
+//        System.out.print("Ramdom slang word: " + randonslw.key + " = " + randonslw.definition.get(0));
+//        for(int i = 1; i < randonslw.definition.size(); i++){
+//            System.out.print(", " + randonslw.definition.get(i));
+//        }
+//        System.out.println("");
+
 //        addNewSlangWord(swList);
 //        for(slang_word sl: swList){
 //            System.out.print(sl.key + ": ");
@@ -40,6 +43,7 @@ public class SlangWord {
 //            }
 //            System.out.println("");
 //        }
+
 //        deleteSlangWord(swList);
 //        for(slang_word sl: swList){
 //            System.out.print(sl.key + ": ");
@@ -48,6 +52,7 @@ public class SlangWord {
 //            }
 //            System.out.println("");
 //        }
+
 //        editSlangWord(swList);
 //        for(slang_word sl: swList){
 //            System.out.print(sl.key + ": ");
@@ -56,9 +61,11 @@ public class SlangWord {
 //            }
 //            System.out.println("");
 //        }
+
 //        for(int i =0; i< 20; i++){
 //            gameSlangWord(swList);
 //        }
+
 //        for(int i =0; i < 15; i++){
 //            gameDefinition(swList);
 //        }
@@ -159,9 +166,31 @@ public class SlangWord {
         }while(true);
         return choose;
     }
-    
+    // #01. Tim kiem theo slang word
+    // Neu co thi tra ve slang word đo
+    // Neu khong co thi tra ve null
+    public static void findSlangWord(ArrayList<slang_word> swList){
+        String key = null;
+
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.print("Nhap slang word can tim kiem: ");
+        key = scanner.nextLine();
+        
+        for(slang_word sw: swList){
+            if(key.equals(sw.key)){
+                System.out.print("Slang word can tim la: " + sw.key + " = " + sw.definition.get(0));
+                for(int i = 1; i < sw.definition.size(); i++){
+                    System.out.print(", " + sw.definition.get(i));
+                }
+                System.out.println("");
+                return;
+            }
+        }
+        System.out.println("Khong ton tai slang word '" + key + "' trong danh sach.");
+    }
     //#04. Them mot slang word moi vao file
-    public static void addNewSlangWord(ArrayList<slang_word> swList) throws IOException {
+    public static void addNewSlangWord(ArrayList<slang_word> swList) {
         String key = null;
         String definition = null;
         ArrayList<String> defineList = new ArrayList<>();
@@ -203,7 +232,7 @@ public class SlangWord {
     }
     
     // #05. Chinh sua mot slang word
-    public static void editSlangWord(ArrayList<slang_word> swList) throws IOException{
+    public static void editSlangWord(ArrayList<slang_word> swList){
         Scanner scanner = new Scanner(System.in);
         String key = null;
         String definiton = null;
@@ -307,7 +336,7 @@ public class SlangWord {
     }
     
     // #06. Xoa mot slang word. Confirm truoc khi xoa.
-    public static void deleteSlangWord(ArrayList<slang_word> swList) throws IOException{
+    public static void deleteSlangWord(ArrayList<slang_word> swList) {
         Scanner scanner = new Scanner(System.in);
         String key = null;
         boolean exist = false;
