@@ -25,6 +25,13 @@ public class SlangWord {
     public static void main(String[] args) throws IOException {
         String filename = "slang.txt";
         ArrayList<slang_word> swList = readFile(filename);
+        
+        slang_word randonslw = randromSlangWord(swList);
+        System.out.print("Ramdom slang word: " + randonslw.key + " = " + randonslw.definition.get(0));
+        for(int i = 1; i < randonslw.definition.size(); i++){
+            System.out.print(", " + randonslw.definition.get(i));
+        }
+        System.out.println("");
 //        addNewSlangWord(swList);
 //        for(slang_word sl: swList){
 //            System.out.print(sl.key + ": ");
@@ -41,14 +48,14 @@ public class SlangWord {
 //            }
 //            System.out.println("");
 //        }
-        editSlangWord(swList);
-        for(slang_word sl: swList){
-            System.out.print(sl.key + ": ");
-            for(String str: sl.definition){
-                System.out.print(str + "| ");
-            }
-            System.out.println("");
-        }
+//        editSlangWord(swList);
+//        for(slang_word sl: swList){
+//            System.out.print(sl.key + ": ");
+//            for(String str: sl.definition){
+//                System.out.print(str + "| ");
+//            }
+//            System.out.println("");
+//        }
 //        for(int i =0; i< 20; i++){
 //            gameSlangWord(swList);
 //        }
@@ -153,7 +160,7 @@ public class SlangWord {
         return choose;
     }
     
-    //Them mot slang word moi vao file
+    //#04. Them mot slang word moi vao file
     public static void addNewSlangWord(ArrayList<slang_word> swList) throws IOException {
         String key = null;
         String definition = null;
@@ -195,7 +202,7 @@ public class SlangWord {
 //        bw.close();
     }
     
-    //Ching sua mot slang word
+    // #05. Chinh sua mot slang word
     public static void editSlangWord(ArrayList<slang_word> swList) throws IOException{
         Scanner scanner = new Scanner(System.in);
         String key = null;
@@ -298,7 +305,8 @@ public class SlangWord {
             System.out.println("Khong ton tai slang word '" + key + "' trong danh sach.");
         }        
     }
-    //Xoa mot slang word. Confirm truoc khi xoa.
+    
+    // #06. Xoa mot slang word. Confirm truoc khi xoa.
     public static void deleteSlangWord(ArrayList<slang_word> swList) throws IOException{
         Scanner scanner = new Scanner(System.in);
         String key = null;
@@ -349,7 +357,13 @@ public class SlangWord {
         }
     }
     
-    // Do vui: Hien thi mot slang word va 4 dap an cho nguoi dung chon.
+    // #08. Ramdom 1 slang word(On this slang word)
+    public static slang_word randromSlangWord(ArrayList<slang_word> swList){
+        Random rd = new Random();
+        return swList.get(rd.nextInt(swList.size()));
+    }
+    
+    // #09. Do vui: Hien thi mot slang word va 4 dap an cho nguoi dung chon.
     public static void gameSlangWord(ArrayList<slang_word> swList){
         //Random slang word ngau nhien.
         Random rd = new Random();
@@ -416,7 +430,7 @@ public class SlangWord {
         }
     }
     
-    // Do vui: Hien thi mot slang word va 4 dap an cho nguoi dung chon.
+    // #10. Do vui: Hien thi mot slang word va 4 dap an cho nguoi dung chon.
     public static void gameDefinition(ArrayList<slang_word> swList){
         //Random definition ngau nhien.
         Random rd = new Random();
@@ -481,6 +495,7 @@ public class SlangWord {
             System.out.println("Ban da chon '" + options[choose - 1] + "' sai roi. Dap an dung ne: " + options[rightId] + " = " + definition + "(Phim " + (rightId + 1) + ")");
         }
     }
+    
     
     
 }
