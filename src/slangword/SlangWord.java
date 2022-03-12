@@ -25,14 +25,36 @@ public class SlangWord {
     public static void main(String[] args) throws IOException {
         String filename = "slang.txt";
         ArrayList<slang_word> swList = readFile(filename);
-//        addNewSlangWord(filename);
-//        deleteSlangWord(filename);
+//        addNewSlangWord(swList);
+//        for(slang_word sl: swList){
+//            System.out.print(sl.key + ": ");
+//            for(String str: sl.definition){
+//                System.out.print(str + "| ");
+//            }
+//            System.out.println("");
+//        }
+//        deleteSlangWord(swList);
+//        for(slang_word sl: swList){
+//            System.out.print(sl.key + ": ");
+//            for(String str: sl.definition){
+//                System.out.print(str + "| ");
+//            }
+//            System.out.println("");
+//        }
+        editSlangWord(swList);
+        for(slang_word sl: swList){
+            System.out.print(sl.key + ": ");
+            for(String str: sl.definition){
+                System.out.print(str + "| ");
+            }
+            System.out.println("");
+        }
 //        for(int i =0; i< 20; i++){
 //            gameSlangWord(swList);
 //        }
-        for(int i =0; i < 15; i++){
-            gameDefinition(swList);
-        }
+//        for(int i =0; i < 15; i++){
+//            gameDefinition(swList);
+//        }
     }
     
     //Doc file luu vao ArrayList
@@ -132,7 +154,7 @@ public class SlangWord {
     }
     
     //Them mot slang word moi vao file
-    public static void addNewSlangWord(String filename) throws IOException {
+    public static void addNewSlangWord(ArrayList<slang_word> swList) throws IOException {
         String key = null;
         String definition = null;
         ArrayList<String> defineList = new ArrayList<>();
@@ -166,13 +188,118 @@ public class SlangWord {
             }while(true);
         }while(choose == 1);
         
-        BufferedWriter bw = new BufferedWriter(new FileWriter(filename, true));
-        bw.write(key + "`" + String.join("| ", defineList) + "\n");
-        bw.close();
+        swList.add(new slang_word(key, defineList));
+        
+//        BufferedWriter bw = new BufferedWriter(new FileWriter(filename, true));
+//        bw.write(key + "`" + String.join("| ", defineList) + "\n");
+//        bw.close();
     }
     
+    //Ching sua mot slang word
+    public static void editSlangWord(ArrayList<slang_word> swList) throws IOException{
+        Scanner scanner = new Scanner(System.in);
+        String key = null;
+        String definiton = null;
+        ArrayList<String> definitionList = new ArrayList<>();
+        
+        boolean exist = false;
+        int choose = 0;
+        
+        System.out.print("Ban muon chinh sua slang word nao: ");
+        key = scanner.nextLine();
+        
+        for(slang_word sw: swList){
+            if(key.equals(sw.key)){
+                exist = true;
+                
+                //Chinh slang word hay definition
+                System.out.println("Ban muon chinh sua slang word hay definition?");
+                System.out.println(" + Phim 1: slang word");
+                System.out.println(" + Phim 2: definition");
+                
+                do{
+                    System.out.print("Ban chon: ");
+                    choose = getInt();
+
+                    if(choose != 1 && choose != 2){
+                        System.out.println("Khong hop le. Hay nhap lai!!");
+                    }
+                    else{
+                        break;
+                    }
+                }while(true);
+                
+                //Chinh sua slang word
+                if(choose == 1){
+                    System.out.print("Slang word moi: ");
+                    sw.key = scanner.nextLine();
+                    
+                    System.out.println("Da chinh slang word '" + key + "' thanh '" + sw.key + "'.");
+                }
+                //Chinh sua definition
+                else{
+                    //Neu chi cos 1 definition
+                    if(sw.definition.size() == 1){
+                        System.out.println("Definition hien tai cua slang word '" + key + "' la: " + sw.definition.get(0)); 
+                        System.out.print("Definition moi la: ");
+                        sw.definition.set(0, scanner.nextLine());
+                    }
+                    //Co nhieu definition
+                    else{
+                        do{
+                            //Lua chon definition chinh sua
+                            System.out.println("Ban muon chinh sua definition nao cua slang word '" + key + "'?");
+                            
+                            for(int i = 0; i < sw.definition.size(); i++){
+                                System.out.println(" + Phim " + (i + 1) + ": " + sw.definition.get(i));
+                            }
+                            
+                            do{
+                                System.out.print("Ban chon: ");
+                                choose = getInt();
+
+                                if(choose < 1 || choose > sw.definition.size()){
+                                    System.out.println("Khong hop le. Hay nhap lai!!");
+                                }
+                                else{
+                                    break;
+                                }
+                            }while(true);
+
+                            System.out.print("Chinh '" + sw.definition.get(choose - 1) + "' thanh: ");
+                            sw.definition.set(choose - 1, scanner.nextLine());   
+                            
+                            //Co muon tiep tuc chinh sua definition hay ket thuc
+                            System.out.println("Ban co muon tiep tuc chinh sua definition cua '" + key + "' khong?");
+                            System.out.println(" + Phim 1: Co");
+                            System.out.println(" + Phim 0: Khong");
+                            
+                            do{
+                                System.out.print("Ban chon: ");
+                                choose = getInt();
+
+                                if(choose != 1 && choose != 0){
+                                    System.out.println("Khong hop le. Hay nhap lai!!");
+                                }
+                                else{
+                                    break;
+                                }
+                            }while(true);
+                        
+                        }while(choose == 1);
+                    }
+                }
+                break;
+            }
+        }
+        
+        //Neu slang word khong co trong danh sach
+        if(exist == false){
+            System.out.println("Khong ton tai slang word '" + key + "' trong danh sach.");
+        }        
+    }
     //Xoa mot slang word. Confirm truoc khi xoa.
-    public static void deleteSlangWord(String filename) throws IOException{
+    public static void deleteSlangWord(ArrayList<slang_word> swList) throws IOException{
         Scanner scanner = new Scanner(System.in);
         String key = null;
         boolean exist = false;
@@ -180,7 +307,6 @@ public class SlangWord {
         System.out.print("Ban muon xoa slang word nao: ");
         key = scanner.nextLine();
         
-        ArrayList<slang_word> swList = readFile(filename);
         
         for(slang_word sw: swList){
             if(key.equals(sw.key)){
@@ -206,14 +332,6 @@ public class SlangWord {
                 if(choose == 1){
                     //Xoa khoi ArrayList
                     swList.remove(sw);
-                    
-                    //Ghi lai vao file
-                    BufferedWriter bw = new BufferedWriter(new FileWriter(filename));
-                    
-                    for(slang_word temp: swList){
-                        bw.write(temp.key + "`" + String.join("| ", temp.definition) + "\n");
-                    }
-                    bw.close();
                     
                     System.out.println("Da xoa thanh cong slang word '" + key + "' ra khoi danh sach.");
                 }
