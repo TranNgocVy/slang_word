@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOError;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
@@ -26,7 +27,10 @@ public class SlangWord {
         String filename = "slang.txt";
         ArrayList<slang_word> swList = readFile(filename);
         
-        findSlangWord(swList);
+        for(int i = 0; i< 10; i++){
+            findBasedOnSlangWord(swList);
+            showHistory();
+        }
         
 //        slang_word randonslw = randromSlangWord(swList);
 //        System.out.print("Ramdom slang word: " + randonslw.key + " = " + randonslw.definition.get(0));
@@ -74,66 +78,69 @@ public class SlangWord {
     //Doc file luu vao ArrayList
     public static ArrayList<slang_word> readFile(String filename) throws IOException {
         ArrayList<slang_word> swList = new ArrayList<>();
-        BufferedReader br = new BufferedReader(new FileReader(filename));
         
-        while(true){
-            ArrayList<String> defineList = new ArrayList<String>();
+        try{
+            BufferedReader br = new BufferedReader(new FileReader(filename));
+            
+            while(true){
+                ArrayList<String> defineList = new ArrayList<String>();
 
-            String line =  br.readLine();
-            String defineString = null;
-            if(line != null){
-                int point = line.indexOf('`');
-                
-                if(point < 0){
-                    defineString = line;
-                    do{
-                        //Xac dinh vi tri phan cach giua cac nghia (doi voi tu co nhieu nghia)
-                        int point1 = defineString.indexOf('|');
-                        
-                        //Neu tu co nhieu nghia: Dua tung nghia vao ArrayList                        
-                        if(point1 >= 0){
-                            defineList.add(defineString.substring(0, point1));
-                            defineString = defineString.substring(point1 + 2);
-                        }
-                        else{
-                            //Dua nghia duy nhat (cuoi cung) vao ArrayList
-                            defineList.add(defineString);
-                            break;
-                        }
-                    }while(true);
-                    
-                    swList.get(swList.size() - 1).definition.addAll(defineList);
+                String line =  br.readLine();
+                String defineString = null;
+                if(line != null){
+                    int point = line.indexOf('`');
+
+                    if(point < 0){
+                        defineString = line;
+                        do{
+                            //Xac dinh vi tri phan cach giua cac nghia (doi voi tu co nhieu nghia)
+                            int point1 = defineString.indexOf('|');
+
+                            //Neu tu co nhieu nghia: Dua tung nghia vao ArrayList                        
+                            if(point1 >= 0){
+                                defineList.add(defineString.substring(0, point1));
+                                defineString = defineString.substring(point1 + 2);
+                            }
+                            else{
+                                //Dua nghia duy nhat (cuoi cung) vao ArrayList
+                                defineList.add(defineString);
+                                break;
+                            }
+                        }while(true);
+
+                        swList.get(swList.size() - 1).definition.addAll(defineList);
+                    }
+                    else{
+                        //Cat lay phan dinh nghia cua slang word
+                        defineString = line.substring(point + 1);
+
+                        do{
+                            //Xac dinh vi tri phan cach giua cac nghia (doi voi tu co nhieu nghia)
+                            int point1 = defineString.indexOf('|');
+
+                            //Neu tu co nhieu nghia: Dua tung nghia vao ArrayList
+                            if(point1 >= 0){
+                                defineList.add(defineString.substring(0, point1));
+                                defineString = defineString.substring(point1 + 2);
+                            }
+                            else{
+                                //Dua nghia duy nhat (cuoi cung) vao ArrayList
+                                defineList.add(defineString);
+                                break;
+                            }
+                        }while(true);
+
+                        slang_word sw = new slang_word(line.substring(0, point), defineList);
+                        swList.add(sw);
+                    }
                 }
                 else{
-                    //Cat lay phan dinh nghia cua slang word
-                    defineString = line.substring(point + 1);
-                    
-                    do{
-                        //Xac dinh vi tri phan cach giua cac nghia (doi voi tu co nhieu nghia)
-                        int point1 = defineString.indexOf('|');
-                        
-                        //Neu tu co nhieu nghia: Dua tung nghia vao ArrayList
-                        if(point1 >= 0){
-                            defineList.add(defineString.substring(0, point1));
-                            defineString = defineString.substring(point1 + 2);
-                        }
-                        else{
-                            //Dua nghia duy nhat (cuoi cung) vao ArrayList
-                            defineList.add(defineString);
-                            break;
-                        }
-                    }while(true);
-                    
-                    slang_word sw = new slang_word(line.substring(0, point), defineList);
-                    swList.add(sw);
+                    br.close();
+                    break;
                 }
             }
-            else{
-                break;
-            }
+        }catch (IOException e) {
         }
-        
-        br.close();
         return swList;
     }
     
@@ -167,9 +174,7 @@ public class SlangWord {
         return choose;
     }
     // #01. Tim kiem theo slang word
-    // Neu co thi tra ve slang word đo
-    // Neu khong co thi tra ve null
-    public static void findSlangWord(ArrayList<slang_word> swList){
+    public static void findBasedOnSlangWord(ArrayList<slang_word> swList)throws IOException{
         String key = null;
 
         Scanner scanner = new Scanner(System.in);
@@ -184,11 +189,38 @@ public class SlangWord {
                     System.out.print(", " + sw.definition.get(i));
                 }
                 System.out.println("");
+                
+                //Them vao file history.txt
+                BufferedWriter bw = new BufferedWriter(new FileWriter("history.txt", true));
+                bw.write(sw.key + "`" + String.join("| ", sw.definition) + "\n");
+                bw.close();
                 return;
             }
         }
         System.out.println("Khong ton tai slang word '" + key + "' trong danh sach.");
     }
+        
+    //#03. Hien thi lich su cac slang word da tra cuu
+    public static void showHistory() throws IOException{
+        ArrayList<slang_word> swList = readFile("history.txt");
+        
+        if(swList.size() == 0){
+            System.out.println("Lich su rong.");
+        }
+        else{
+            System.out.println("Danh sach ca slang word da tra la: ");
+            for(slang_word sw: swList){
+                System.out.print("\t + " + sw.key + " = " + sw.definition.get(0));
+                
+                for(int i = 1; i < sw.definition.size(); i++){
+                    System.out.print("| " + sw.definition.get(i));
+                }
+                
+                System.out.println("");
+            }
+        }
+    }
+
     //#04. Them mot slang word moi vao file
     public static void addNewSlangWord(ArrayList<slang_word> swList) {
         String key = null;
