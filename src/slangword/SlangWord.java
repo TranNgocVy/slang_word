@@ -82,14 +82,22 @@ public class SlangWord {
                 case 4:
                     System.out.println("-------Them 1 slang word moi-------");
                     addNewSlangWord(map);
+                    wirteFile(filename, map);
+
                     break;
                 case 5:
                     System.out.println("-------Chinh sua 1 slang word-------");
-                    editSlangWord(map);
+                    int result = editSlangWord(map);
+                    if (result == 1) {
+                        wirteFile(filename, map);
+                    }
                     break;
                 case 6:
                     System.out.println("-------Xoa 1 slang word-------");
-                    deleteSlangWord(map);
+                    result = deleteSlangWord(map);
+                    if (result == 1) {
+                        wirteFile(filename, map);
+                    }
                     break;
                 case 7:
                     System.out.println("-------Reset lai danh sach slang word goc-------");
@@ -212,6 +220,16 @@ public class SlangWord {
         return map;
     }
 
+    // Ghi map luu vao file
+    public static void wirteFile(String filename, Map<String, ArrayList<String>> map) throws IOException {
+        //Ghi slang word ban dau vao file newSlangWord.txt (dung de reset lai danh sach goc)
+        BufferedWriter bw = new BufferedWriter(new FileWriter(filename));
+        for(Map.Entry<String, ArrayList<String>> entry : map.entrySet()) {
+            bw.write(entry.getKey() + "`" + String.join("| ", entry.getValue()) + "\n");
+        }
+        bw.close();
+    }
+    
     // Nhap vao mot so nguyen tu man hinh console
     public static int getInt() {
         boolean isValid = true;
@@ -321,7 +339,7 @@ public class SlangWord {
     }
 
     // #04. Them mot slang word moi vao file
-    public static void addNewSlangWord(Map<String, ArrayList<String>> map) {
+    public static void addNewSlangWord(Map<String, ArrayList<String>> map) throws IOException{
         String key = null;
         String definition = null;
         ArrayList<String> defList = new ArrayList<>();
@@ -329,38 +347,55 @@ public class SlangWord {
 
         System.out.print("Slang word moi: ");
         key = scanner.nextLine();
-
-        do {
-            System.out.print("Nghia cua slang word moi: ");
-            definition = scanner.nextLine();
-
-            defList.add(definition);
-
-            System.out.println("Con nghia nao khac nua hay khong?");
-            System.out.println(" + Phim 1: Co");
-            System.out.println(" + Phim 0: Khong");
-
+        
+        if(map.containsKey(key)){
+            System.out.println("Slang word '" + key + "' da co trong danh sach: " + key + " = " + map.get(key));
+            System.out.println("Neu trong danh sach khong co nghia ban muon. Ban co the chom phim 5 o Menu và lam theo huong dan de them nghia moi cho slang word '" + key + "'" );
+        }
+        else {
             do {
-                System.out.print("Ban chon: ");
-                choose = getInt();
+                System.out.print("Nghia cua slang word moi: ");
+                definition = scanner.nextLine();
 
-                if (choose != 0 && choose != 1) {
-                    System.out.println("Khong hop le. Hay nhap lai!!");
-                } else {
-                    break;
-                }
-            } while (true);
-        } while (choose == 1);
+                defList.add(definition);
 
-        map.put(key, defList);
+                System.out.println("Con nghia nao khac nua hay khong?");
+                System.out.println(" + Phim 1: Co");
+                System.out.println(" + Phim 0: Khong");
 
-        // BufferedWriter bw = new BufferedWriter(new FileWriter(filename, true));
-        // bw.write(key + "`" + String.join("| ", defineList) + "\n");
-        // bw.close();
+                do {
+                    System.out.print("Ban chon: ");
+                    choose = getInt();
+
+                    if (choose != 0 && choose != 1) {
+                        System.out.println("Khong hop le. Hay nhap lai!!");
+                    } else {
+                        break;
+                    }
+                } while (true);
+            } while (choose == 1);
+
+            System.out.println("Da them slang vua nhap vao danh sach");
+
+            map.put(key, defList);
+            
+            
+            //Ghi slang word moi vao file newSlangWord.txt (dung de reset lai danh sach goc)
+            BufferedWriter bw = new BufferedWriter(new FileWriter("newSlangWord.txt", true));
+            bw.write(key + "`" + String.join("| ", map.get(key)) + "\n");
+            bw.close();
+            
+            //Ghi slang word moi vao file slang.txt
+            bw = new BufferedWriter(new FileWriter("slang1.txt", true));
+            bw.write(key + "`" + String.join("| ", map.get(key)) + "\n");
+            bw.close();
+        }
+
+       
     }
 
     // #05. Chinh sua mot slang word
-    public static void editSlangWord(Map<String, ArrayList<String>> map) {
+    public static int editSlangWord(Map<String, ArrayList<String>> map) throws IOException{
         String key = null;
         int choose = 0;
 
@@ -368,6 +403,11 @@ public class SlangWord {
         key = scanner.nextLine();
 
         if (map.containsKey(key)) {
+            //Ghi slang word ban dau vao file originalSlangWord.txt (dung de reset lai danh sach goc)
+            BufferedWriter bw = new BufferedWriter(new FileWriter("originalSlangWord.txt", true));
+            bw.write(key + "`" + String.join("| ", map.get(key)) + "\n");
+            bw.close();
+            
             ArrayList<String> defList = map.get(key);
             // Chinh slang word hay definition
             System.out.println("Ban muon chinh sua slang word hay definition?");
@@ -452,54 +492,66 @@ public class SlangWord {
                 } while (choose == 1);
 
                 map.put(key, defList);
+                System.out.println("Da chinh sua slang word thanh cong");
             }
+            return 1;
         } else {
             System.out.println("Khong ton tai slang word '" + key + "' trong danh sach.");
+            return 0;
         }
     }
 
-    // // #06. Xoa mot slang word. Confirm truoc khi xoa.
-    public static void deleteSlangWord(Map<String, ArrayList<String>> map) {
+    // #06. Xoa mot slang word. Confirm truoc khi xoa.
+    public static int deleteSlangWord(Map<String, ArrayList<String>> map) throws IOException{
         String key = null;
         boolean exist = false;
         int choose = 0;
         System.out.print("Ban muon xoa slang word nao: ");
         key = scanner.nextLine();
 
-        if(map.containsKey(key)){
+        if (map.containsKey(key)) {
+
+            
             // Xac nhan co xoa slang word hay khong
-                System.out.println("Ban co chac la muon xoa slang word '" + key + "' hay khong ? ");
-                System.out.println(" + Phim 1: Xoa");
-                System.out.println(" + Phim 0: Tro lai");
+            System.out.println("Ban co chac la muon xoa slang word '" + key + "' hay khong ? ");
+            System.out.println(" + Phim 1: Xoa");
+            System.out.println(" + Phim 0: Tro lai");
 
-                do {
-                    System.out.print("Ban chon: ");
-                    choose = getInt();
+            do {
+                System.out.print("Ban chon: ");
+                choose = getInt();
 
-                    if (choose != 0 && choose != 1) {
-                        System.out.println("Khong hop le. Hay nhap lai!!");
-                    }
-                    else {
-                        break;
-                    }
-                } while (true);
-
-                // Khi xac nhan dong y xoa slang word
-                if (choose == 1) {
-                    // Xoa khoi ArrayList
-                    map.remove(key);
-
-                    System.out.println("Da xoa thanh cong slang word '" + key + "' ra khoi danh sach.");
+                if (choose != 0 && choose != 1) {
+                    System.out.println("Khong hop le. Hay nhap lai!!");
+                } else {
+                    break;
                 }
-                // Khong dong y xoa slang word.
-                else {
-                    System.out.println("Thao tac xoa slang word '" + key + "' da huy bo.");
-                }
-        }
-        // Neu slang word khong co trong danh sach
+            } while (true);
+
+            // Khi xac nhan dong y xoa slang word
+            if (choose == 1) {
+                //Ghi slang word ban dau vao file originalSlangWord.txt (dung de reset lai danh sach goc)
+                BufferedWriter bw = new BufferedWriter(new FileWriter("originalSlangWord.txt", true));
+                bw.write(key + "`" + String.join("| ", map.get(key)) + "\n");
+                bw.close();
+                
+                
+                
+                // Xoa khoi ArrayList
+                map.remove(key);
+
+                System.out.println("Da xoa thanh cong slang word '" + key + "' ra khoi danh sach.");
+                
+                return 1;
+            } // Khong dong y xoa slang word.
+            else {
+                System.out.println("Thao tac xoa slang word '" + key + "' da huy bo.");
+            }
+        } // Neu slang word khong co trong danh sach
         else {
             System.out.println("Khong ton tai slang word '" + key + "' trong danh sach.");
         }
+        return 0;
     }
 
     // #08. Ramdom 1 slang word(On this slang word)
