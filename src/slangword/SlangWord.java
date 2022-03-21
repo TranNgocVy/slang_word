@@ -199,6 +199,41 @@ public class SlangWord {
         }
         System.out.println("Khong ton tai slang word '" + key + "' trong danh sach.");
     }
+
+    // #02. Tim kiem theo definition
+    public static void findBasedOnDefinition(Map<String, ArrayList<String>> map) throws IOException {
+        String definition = null;
+        Map<String, ArrayList<String>> resultMap = new HashMap<String, ArrayList<String>>();
+
+        System.out.print("Nhap definition can tim kiem: ");
+        definition = scanner.nextLine();
+
+        // Chuyen definition ve dang chu thuong
+        definition = definition.toLowerCase();
+
+        for (Map.Entry<String, ArrayList<String>> entry : map.entrySet()) {
+            for (String def : entry.getValue()) {
+                if (def.toLowerCase().contains(definition)) {
+                    resultMap.put(entry.getKey(), entry.getValue());
+                }
+            }
+        }
+
+        if (resultMap.size() == 0) {
+            System.out.println("Khong ton tai slang word ma definition co chua: " + definition);
+        } else {
+            System.out.println("Slang word ma trong definition co chua '" + definition + "' la:");
+            for (Map.Entry<String, ArrayList<String>> entry : resultMap.entrySet()) {
+                System.out.print("\t" + entry.getKey() + " = " + entry.getValue().get(0));
+                for (int i = 1; i < entry.getValue().size(); i++) {
+                    System.out.print("| " + entry.getValue().get(i));
+                }
+                System.out.println("");
+            }
+        }
+
+    }
+
         
     //#03. Hien thi lich su cac slang word da tra cuu
     public static void showHistory() throws IOException{
@@ -440,8 +475,8 @@ public class SlangWord {
         //Chon vi tri cua dap an dung trong 4 dap an
         int rightId = rd.nextInt(4);
         
-//        //Chon dap an dung (Truong hop slang word co nhieu nghia)
-//        options[rightId] = sw.definition.get(rd.nextInt(sw.definition.size()));        
+       //Chon dap an dung (Truong hop slang word co nhieu nghia)
+       options[rightId] = sw.definition.get(rd.nextInt(sw.definition.size()));        
         
         //Tao cac dap an
         int tempId = swId + 1;
