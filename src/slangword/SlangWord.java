@@ -32,64 +32,90 @@ public class SlangWord {
 
         String filename = "slang1.txt";
         Map<String, ArrayList<String>> map = readFile(filename);
-//        System.out.println(map.size());
-//        for (Map.Entry<String, ArrayList<String>> entry : map.entrySet()) {
-//            System.out.println(entry.getKey() + " = " + entry.getValue());
-//        }
         
-//        System.out.println("--------------Random--------------------");
-//
-//        for (int i = 0; i < 3; i++) {
-//            String key = randromSlangWord(map);
-//            System.out.println(key + " = " + map.get(key));
-//
-//        }
+        //Ramdom slang word ngay nhien moi lan chay chuong trinh
+            String randomky = randromSlangWord(map);
+            
+            System.out.println("Slang word ngau nhien cua lan nay la: " + randomky + " = " + map.get(randomky));
+        
+        int choose = 0;
+        do{
+            System.out.println("\n*********************MENU*********************");
+            System.out.println("\t + Phim 1: Tim kiem theo slang word");
+            System.out.println("\t + Phim 2: Tim kiem theo definition");
+            System.out.println("\t + Phim 3: Hien thi lich su tim kiem");
+            System.out.println("\t + Phim 4: Them 1 slang word moi");
+            System.out.println("\t + Phim 5: Chinh sua 1 slang word");
+            System.out.println("\t + Phim 6: Xoa 1 slang word");
+            System.out.println("\t + Phim 7: Reset lai danh sach slang word goc");
+            System.out.println("\t + Phim 8: Random 1 slang word");
+            System.out.println("\t + Phim 9: Do vui, cho 1 slang word va 4 dap an");
+            System.out.println("\t + Phim 10: Do vui, cho 1 definition va 4 dap an");
+            System.out.println("\t + Phim 0: Ket thuc");
+            
+            do{
+                System.out.print("Ban chon: ");
+                choose = getInt();
 
-        // for (int i = 0; i < 3; i++) {
-        // findBasedOnSlangWord(map);
-        // showHistory();
-        // }
+                if(choose < 0 || choose > 10){
+                    System.out.println("Khong hop le. Hay nhap lai!!!");
+                }
+                else {
+                    break;
+                }
+            }while(true);
+            
+            switch (choose){
+                case 1:
+                    System.out.println("-------Tim kiem theo slang word-------");
+                    findBasedOnSlangWord(map);
+                    break;
+                case 2:
+                    System.out.println("-------Tim kiem theo definition-------");
+                    
+                    findBasedOnDefinition(map);
+                    break;
+                case 3:
+                    System.out.println("-------Hien thi lich su tim kiem-------");
+                    showHistory();
+                    break;
+                case 4:
+                    System.out.println("-------Them 1 slang word moi-------");
+                    addNewSlangWord(map);
+                    break;
+                case 5:
+                    System.out.println("-------Chinh sua 1 slang word-------");
+                    editSlangWord(map);
+                    break;
+                case 6:
+                    System.out.println("-------Xoa 1 slang word-------");
+                    deleteSlangWord(map);
+                    break;
+                case 7:
+                    System.out.println("-------Reset lai danh sach slang word goc-------");
+                    
+                    break;
+                case 8:
+                    System.out.println("-------Random 1 slang word-------");
+                    
+                    randomky = randromSlangWord(map);
+                    System.out.println("Slang word ngau nhien cua lan nay la: " + randomky + " = " + map.get(randomky));
 
-        // for (int i = 0; i < 3; i++) {
-        // findBasedOnDefinition(map);
-        // }
-
-        // slang_word randonslw = randromSlangWord(swList);
-        // System.out.print("Ramdom slang word: " + randonslw.key + " = " +
-        // randonslw.definition.get(0));
-        // for(int i = 1; i < randonslw.definition.size(); i++){
-        // System.out.print(", " + randonslw.definition.get(i));
-        // }
-        // System.out.println("");
-
-//        for (int i = 0; i < 3; i++) {
-//            addNewSlangWord(map);
-//            for (Map.Entry<String, ArrayList<String>> entry : map.entrySet()) {
-//                System.out.println(entry.getKey() + " = " + entry.getValue());
-//            }
-//        }
-
-//        for (int i = 0; i < 3; i++) {
-//            deleteSlangWord(map);
-//            for (Map.Entry<String, ArrayList<String>> entry : map.entrySet()) {
-//                System.out.println(entry.getKey() + " = " + entry.getValue());
-//            }
-//        }
-
-//        for (int i = 0; i < 3; i++) {
-//            editSlangWord(map);
-//            for (Map.Entry<String, ArrayList<String>> entry : map.entrySet()) {
-//                System.out.println(entry.getKey() + " = " + entry.getValue());
-//            }
-//        }
-
-        for (int i = 0; i < 2; i++) {
-            gameSlangWord(map);
-        }
-
-        for (int i = 0; i < 2; i++) {
-            gameDefinition(map);
-        }
+                    break;
+                case 9:
+                    System.out.println("-------Do vui, cho 1 slang word va 4 dap an-------");
+                    gameSlangWord(map);
+                    break;
+                case 10:
+                    System.out.println("-------Do vui, cho 1 definition va 4 dap an-------");
+                    gameDefinition(map);
+                    break;
+                default:
+                    break;
+            }
+            
+        }while(choose != 0);
+        
         scanner.close();
     }
 
