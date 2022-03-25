@@ -4,11 +4,7 @@
  */
 package slangword;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,14 +26,14 @@ public class SlangWord {
     public static void main(String[] args) throws IOException {
         scanner = new Scanner(System.in);
 
-        String filename = "slang1.txt";
+        String filename = "slang.txt";
         Map<String, ArrayList<String>> map = readFile(filename);
         
         //Ramdom slang word ngay nhien moi lan chay chuong trinh
-            String randomky = randromSlangWord(map);
-            
-            System.out.println("Slang word ngau nhien cua lan nay la: " + randomky + " = " + map.get(randomky));
-        
+        String randomky = randromSlangWord(map);
+
+        System.out.println("Slang word ngau nhien cua lan nay la: " + randomky + " = " + map.get(randomky));
+
         int choose = 0;
         do{
             System.out.println("\n*********************MENU*********************");
@@ -66,60 +62,70 @@ public class SlangWord {
             }while(true);
             
             switch (choose){
-                case 1:
+                case 1 -> {
                     System.out.println("-------Tim kiem theo slang word-------");
                     findBasedOnSlangWord(map);
-                    break;
-                case 2:
+                }
+                case 2 -> {
                     System.out.println("-------Tim kiem theo definition-------");
                     
                     findBasedOnDefinition(map);
-                    break;
-                case 3:
+                }
+                case 3 -> {
                     System.out.println("-------Hien thi lich su tim kiem-------");
                     showHistory();
-                    break;
-                case 4:
+                }
+                case 4 -> {
                     System.out.println("-------Them 1 slang word moi-------");
                     addNewSlangWord(map);
                     wirteFile(filename, map);
-
-                    break;
-                case 5:
+                    
+                }
+                case 5 -> {
                     System.out.println("-------Chinh sua 1 slang word-------");
                     int result = editSlangWord(map);
                     if (result == 1) {
                         wirteFile(filename, map);
-                    }
-                    break;
-                case 6:
+                    }    
+                    
+                }
+                case 6 -> {
                     System.out.println("-------Xoa 1 slang word-------");
-                    result = deleteSlangWord(map);
+                    int result = deleteSlangWord(map);
                     if (result == 1) {
                         wirteFile(filename, map);
                     }
-                    break;
-                case 7:
-                    System.out.println("-------Reset lai danh sach slang word goc-------");
                     
-                    break;
-                case 8:
+                }
+                case 7 -> {
+                    System.out.println("-------Reset lai danh sach slang word goc-------");
+                    //Xoa map cu
+                    map.clear();
+                    
+                    //Gap lai map moi
+                    map = resetSlangWord();
+                    
+                    //Ghi lai vao file slang.txt
+                    wirteFile(filename, map);
+                    
+                    System.out.println("Da reset danh sach slang word thanh cong");
+                }
+                case 8 -> {
                     System.out.println("-------Random 1 slang word-------");
                     
                     randomky = randromSlangWord(map);
                     System.out.println("Slang word ngau nhien cua lan nay la: " + randomky + " = " + map.get(randomky));
-
-                    break;
-                case 9:
+                }
+                case 9 -> {
                     System.out.println("-------Do vui, cho 1 slang word va 4 dap an-------");
                     gameSlangWord(map);
-                    break;
-                case 10:
+                }
+                case 10 -> {
                     System.out.println("-------Do vui, cho 1 definition va 4 dap an-------");
                     gameDefinition(map);
-                    break;
-                default:
-                    break;
+                }
+                default -> {
+                }
             }
             
         }while(choose != 0);
@@ -129,7 +135,7 @@ public class SlangWord {
 
     // Doc file luu vao Map
     public static Map<String, ArrayList<String>> readFile(String filename) throws IOException {
-        Map<String, ArrayList<String>> map = new HashMap<String, ArrayList<String>>();
+        Map<String, ArrayList<String>> map = new HashMap<>();
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(filename));
@@ -138,8 +144,8 @@ public class SlangWord {
             int point = line.indexOf('`');
 
             String key = line.substring(0, point);
-            String defString = null;
-            ArrayList<String> defList = new ArrayList<String>();
+            String defString;
+            ArrayList<String> defList = new ArrayList<>();
 
             // Cat lay phan dinh nghia cua slang word
             defString = line.substring(point + 1);
@@ -215,24 +221,30 @@ public class SlangWord {
                     break;
                 }
             } while (true);
-        } catch (IOException e) {
+        } 
+        catch (IOException e) {}
+        
+        File originalFile = new File ("originalSlangWord.txt");
+        if(!originalFile.exists()){
+            wirteFile("originalSlangWord.txt", map);
         }
+        
         return map;
     }
 
     // Ghi map luu vao file
     public static void wirteFile(String filename, Map<String, ArrayList<String>> map) throws IOException {
         //Ghi slang word ban dau vao file newSlangWord.txt (dung de reset lai danh sach goc)
-        BufferedWriter bw = new BufferedWriter(new FileWriter(filename));
-        for(Map.Entry<String, ArrayList<String>> entry : map.entrySet()) {
-            bw.write(entry.getKey() + "`" + String.join("| ", entry.getValue()) + "\n");
+        try ( BufferedWriter bw = new BufferedWriter(new FileWriter(filename))) {
+            for (Map.Entry<String, ArrayList<String>> entry : map.entrySet()) {
+                bw.write(entry.getKey() + "`" + String.join("| ", entry.getValue()) + "\n");
+            }
         }
-        bw.close();
     }
     
     // Nhap vao mot so nguyen tu man hinh console
     public static int getInt() {
-        boolean isValid = true;
+        boolean isValid;
         int choose = 0;
 
         do {
@@ -261,7 +273,7 @@ public class SlangWord {
 
     // #01. Tim kiem theo slang word
     public static void findBasedOnSlangWord(Map<String, ArrayList<String>> map) throws IOException {
-        String key = null;
+        String key;
 
         System.out.print("Nhap slang word can tim kiem: ");
         key = scanner.nextLine();
@@ -274,11 +286,10 @@ public class SlangWord {
                 System.out.print(", " + defList.get(i));
             }
             System.out.println("");
-
             // Them vao file history.txt
-            BufferedWriter bw = new BufferedWriter(new FileWriter("history.txt", true));
-            bw.write(key + "`" + String.join("| ", defList) + "\n");
-            bw.close();
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter("history.txt", true))) {
+                bw.write(key + "`" + String.join("| ", defList) + "\n");
+            }
         } else {
             System.out.println("Khong ton tai slang word '" + key + "' trong danh sach.");
         }
@@ -286,8 +297,8 @@ public class SlangWord {
 
     // #02. Tim kiem theo definition
     public static void findBasedOnDefinition(Map<String, ArrayList<String>> map) throws IOException {
-        String definition = null;
-        Map<String, ArrayList<String>> resultMap = new HashMap<String, ArrayList<String>>();
+        String definition;
+        Map<String, ArrayList<String>> resultMap = new HashMap<>();
 
         System.out.print("Nhap definition can tim kiem: ");
         definition = scanner.nextLine();
@@ -303,7 +314,7 @@ public class SlangWord {
             }
         }
 
-        if (resultMap.size() == 0) {
+        if (resultMap.isEmpty()) {
             System.out.println("Khong ton tai slang word ma definition co chua: " + definition);
         } else {
             System.out.println("Slang word ma trong definition co chua '" + definition + "' la:");
@@ -322,7 +333,7 @@ public class SlangWord {
     public static void showHistory() throws IOException {
         Map<String, ArrayList<String>> map = readFile("history.txt");
 
-        if (map.size() == 0) {
+        if (map.isEmpty()) {
             System.out.println("Lich su rong.");
         } else {
             System.out.println("Danh sach ca slang word da tra la: ");
@@ -340,8 +351,8 @@ public class SlangWord {
 
     // #04. Them mot slang word moi vao file
     public static void addNewSlangWord(Map<String, ArrayList<String>> map) throws IOException{
-        String key = null;
-        String definition = null;
+        String key;
+        String definition;
         ArrayList<String> defList = new ArrayList<>();
         int choose = 0;
 
@@ -379,16 +390,10 @@ public class SlangWord {
 
             map.put(key, defList);
             
-            
-            //Ghi slang word moi vao file newSlangWord.txt (dung de reset lai danh sach goc)
-            BufferedWriter bw = new BufferedWriter(new FileWriter("newSlangWord.txt", true));
-            bw.write(key + "`" + String.join("| ", map.get(key)) + "\n");
-            bw.close();
-            
             //Ghi slang word moi vao file slang.txt
-            bw = new BufferedWriter(new FileWriter("slang1.txt", true));
-            bw.write(key + "`" + String.join("| ", map.get(key)) + "\n");
-            bw.close();
+            try ( BufferedWriter bw = new BufferedWriter(new FileWriter("slang.txt", true))) {
+                bw.write(key + "`" + String.join("| ", map.get(key)) + "\n");
+            }
         }
 
        
@@ -396,18 +401,13 @@ public class SlangWord {
 
     // #05. Chinh sua mot slang word
     public static int editSlangWord(Map<String, ArrayList<String>> map) throws IOException{
-        String key = null;
+        String key;
         int choose = 0;
 
         System.out.print("Ban muon chinh sua slang word nao: ");
         key = scanner.nextLine();
 
         if (map.containsKey(key)) {
-            //Ghi slang word ban dau vao file originalSlangWord.txt (dung de reset lai danh sach goc)
-            BufferedWriter bw = new BufferedWriter(new FileWriter("originalSlangWord.txt", true));
-            bw.write(key + "`" + String.join("| ", map.get(key)) + "\n");
-            bw.close();
-            
             ArrayList<String> defList = map.get(key);
             // Chinh slang word hay definition
             System.out.println("Ban muon chinh sua slang word hay definition?");
@@ -503,15 +503,12 @@ public class SlangWord {
 
     // #06. Xoa mot slang word. Confirm truoc khi xoa.
     public static int deleteSlangWord(Map<String, ArrayList<String>> map) throws IOException{
-        String key = null;
-        boolean exist = false;
+        String key;
         int choose = 0;
         System.out.print("Ban muon xoa slang word nao: ");
         key = scanner.nextLine();
 
         if (map.containsKey(key)) {
-
-            
             // Xac nhan co xoa slang word hay khong
             System.out.println("Ban co chac la muon xoa slang word '" + key + "' hay khong ? ");
             System.out.println(" + Phim 1: Xoa");
@@ -530,13 +527,6 @@ public class SlangWord {
 
             // Khi xac nhan dong y xoa slang word
             if (choose == 1) {
-                //Ghi slang word ban dau vao file originalSlangWord.txt (dung de reset lai danh sach goc)
-                BufferedWriter bw = new BufferedWriter(new FileWriter("originalSlangWord.txt", true));
-                bw.write(key + "`" + String.join("| ", map.get(key)) + "\n");
-                bw.close();
-                
-                
-                
                 // Xoa khoi ArrayList
                 map.remove(key);
 
@@ -553,11 +543,15 @@ public class SlangWord {
         }
         return 0;
     }
-
+    
+    // #07. Reset danh sach slangword goc
+    public static Map<String, ArrayList<String>> resetSlangWord() throws IOException{
+        return readFile("originalSlangWord.txt");
+    }
     // #08. Ramdom 1 slang word(On this slang word)
     public static String randromSlangWord(Map<String, ArrayList<String>> map) {
         Random rd = new Random();
-        List<String> keyList = new ArrayList<String> (map.keySet());
+        List<String> keyList = new ArrayList<> (map.keySet());
         return keyList.get(rd.nextInt(keyList.size()));
     }
 
